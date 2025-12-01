@@ -1,0 +1,23 @@
+{
+  "name": "upgrade-language",
+  "version": "1.0.0",
+  "description": "A comprehensive plugin for upgrading programming language versions with proper analysis, testing, and documentation",
+  "author": "Claude Code Community",
+  "keywords": [
+    "upgrade",
+    "language",
+    "version",
+    "java",
+    "node",
+    "python",
+    "go",
+    "rust",
+    "lts",
+    "migration"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT"
+}

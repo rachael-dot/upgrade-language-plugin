@@ -1,0 +1,42 @@
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE/Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.sublime-*
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+.cache/
+
+# Node modules (if any build tools are added later)
+node_modules/
+
+# Python (if any build tools are added later)
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Test coverage
+coverage/
+.nyc_output/
+*.coverage
+
+# Environment files
+.env
+.env.local
