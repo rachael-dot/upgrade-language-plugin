@@ -7,10 +7,13 @@
   "plugins": [
     {
       "name": "upgrade-language",
-      "source": ".",
+      "source": "./",
       "description": "A comprehensive plugin for upgrading programming language versions with proper analysis, testing, and documentation",
       "version": "1.0.0",
-      "author": "rachael-dot",
+      "author": {
+        "name": "rachael-dot",
+        "email": "rachael-dot@users.noreply.github.com"
+      },
       "repository": "https://github.com/rachael-dot/upgrade-language-plugin",
       "license": "MIT",
       "keywords": [
