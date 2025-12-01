@@ -18,9 +18,6 @@
     "lts",
     "migration"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rachael-dot/upgrade-language-plugin"
-  },
+  "repository": "https://github.com/rachael-dot/upgrade-language-plugin",
   "license": "MIT"
 }
