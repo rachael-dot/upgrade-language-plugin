@@ -2,7 +2,10 @@
   "name": "upgrade-language",
   "version": "1.0.0",
   "description": "A comprehensive plugin for upgrading programming language versions with proper analysis, testing, and documentation",
-  "author": "Claude Code Community",
+  "author": {
+    "name": "rachael-dot",
+    "email": "rachael-dot@users.noreply.github.com"
+  },
   "keywords": [
     "upgrade",
     "language",
@@ -17,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/rachael-dot/upgrade-language-plugin"
   },
   "license": "MIT"
 }
