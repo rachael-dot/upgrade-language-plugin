@@ -1,0 +1,34 @@
+{
+  "name": "upgrade-language-marketplace",
+  "owner": {
+    "name": "rachael-dot",
+    "email": "rachael-dot@users.noreply.github.com"
+  },
+  "plugins": [
+    {
+      "name": "upgrade-language",
+      "source": ".",
+      "description": "A comprehensive plugin for upgrading programming language versions with proper analysis, testing, and documentation",
+      "version": "1.0.0",
+      "author": "rachael-dot",
+      "repository": "https://github.com/rachael-dot/upgrade-language-plugin",
+      "license": "MIT",
+      "keywords": [
+        "upgrade",
+        "language",
+        "version",
+        "java",
+        "node",
+        "python",
+        "go",
+        "rust",
+        "lts",
+        "migration"
+      ]
+    }
+  ],
+  "metadata": {
+    "description": "Claude Code plugin marketplace for language version upgrades",
+    "version": "1.0.0"
+  }
+}
