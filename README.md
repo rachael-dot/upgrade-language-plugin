@@ -93,6 +93,38 @@ Claude can autonomously use this skill when:
 - CVE warnings appear in builds
 - You need to perform security updates
 
+### 4. Safe Commit and PR Plugin
+
+Safely commits code changes, runs all tests, checks for security issues, pushes to GitHub, and creates a pull request with comprehensive validation.
+
+**Key Features**: Complete safety workflow with automated checks:
+- Never pushes directly to master/main (always uses feature branches)
+- Runs complete test suite - all tests must pass 100%
+- Checks for security vulnerabilities and code issues
+- Blocks push if critical/high security issues found
+- Creates detailed COMMIT_ISSUES.md if any problems detected
+- Generates comprehensive PR descriptions with test and security status
+
+#### Slash Command: `/safe-commit-pr`
+
+Manually invoke the safe commit and PR workflow:
+
+```bash
+/safe-commit-pr
+/safe-commit-pr feat(auth): add JWT authentication
+/safe-commit-pr fix(api): resolve rate limiting for issue #42
+/safe-commit-pr security(db): fix SQL injection vulnerability
+```
+
+#### Skill: `safe-commit-pr`
+
+Claude can autonomously use this skill when:
+- You ask to commit and push changes
+- You request a pull request be created
+- You want to ensure tests pass before pushing
+- You need security validation before committing
+- You mention creating a PR or pushing to GitHub
+
 ## What Gets Updated
 
 ### Upgrade Language Plugin
@@ -133,6 +165,23 @@ Automatically handles security vulnerability management:
   - Update strategy and prioritization
   - Test results and verification
 
+### Safe Commit and PR Plugin
+
+Provides a comprehensive, safe workflow for committing and pushing code:
+
+- **Branch Safety**: Automatically creates feature branch if on master/main, never pushes directly to main branch
+- **Test Validation**: Runs complete test suite for all frameworks (npm, pytest, maven, gradle, go, rust, etc.)
+- **Test Requirements**: ALL tests must pass (100% pass rate) - any failure blocks the push
+- **Security Scanning**: Checks for vulnerabilities, hardcoded secrets, common security issues (SQL injection, XSS, etc.)
+- **Security Requirements**: Critical and high severity issues block the push
+- **Issue Documentation**: Creates comprehensive `COMMIT_ISSUES.md` when tests fail or security issues found with:
+  - Detailed test failure information with error messages and locations
+  - Complete security issue analysis with CVEs and remediation steps
+  - Specific recommendations and action items
+  - File-by-file change analysis
+- **Commit Creation**: Generates properly formatted conventional commits with test and security status
+- **PR Generation**: Creates detailed pull requests with comprehensive descriptions including test results and security scan status
+
 ## Installation
 
 ### Option 1: Install from Directory
@@ -146,7 +195,7 @@ cd tlm-plugin-repo
 claude plugin install .
 ```
 
-This will install all three plugins: upgrade-language, upgrade-springboot, and update-vulnerable-dependencies.
+This will install all four plugins: upgrade-language, upgrade-springboot, update-vulnerable-dependencies, and safe-commit-pr.
 
 ### Option 2: Install from GitHub
 
@@ -154,7 +203,7 @@ This will install all three plugins: upgrade-language, upgrade-springboot, and u
 claude plugin install <github-url>
 ```
 
-All three plugins will be available as slash commands and skills after installation.
+All four plugins will be available as slash commands and skills after installation.
 
 ## Usage
 
@@ -281,6 +330,75 @@ Link the security update to a GitHub issue:
 - **.NET**: dotnet list package --vulnerable
 - **PHP**: composer audit
 
+### Safe Commit and PR Plugin
+
+#### Basic Usage
+
+Invoke the command to safely commit, test, and create a PR:
+
+```bash
+/safe-commit-pr
+```
+
+The plugin will automatically handle the complete workflow from testing through PR creation.
+
+#### With Commit Type and Description
+
+Specify the type of commit using conventional commit format:
+
+```bash
+/safe-commit-pr feat(auth): add JWT authentication
+/safe-commit-pr fix(api): resolve rate limiting issue
+/safe-commit-pr security(db): fix SQL injection vulnerability
+```
+
+#### With GitHub Issue
+
+Link the changes to a GitHub issue:
+
+```bash
+/safe-commit-pr fix(validation): correct email regex for issue #42
+```
+
+#### What the Plugin Does
+
+1. **Check Current Branch**: Verifies not on master/main, creates feature branch if needed
+2. **Review Changes**: Examines all modified files and checks for sensitive data
+3. **Run All Tests**: Executes complete test suite for detected framework (npm, pytest, maven, gradle, go, rust, etc.)
+4. **Test Validation**: ALL tests must pass (100% success rate) - any failure blocks the push
+5. **Security Scanning**: Checks for vulnerabilities, hardcoded secrets, and common security issues
+6. **Security Validation**: Critical and high severity issues block the push
+7. **Create Issue Report**: If tests fail or security issues found, creates detailed `COMMIT_ISSUES.md` with:
+   - Complete test failure information with error messages
+   - Detailed security issue analysis with CVEs
+   - Specific remediation recommendations
+   - No commit or push is performed
+8. **Stage and Commit**: Creates properly formatted conventional commit with test and security status
+9. **Push to Remote**: Pushes to feature branch (never to master/main)
+10. **Create Pull Request**: Generates comprehensive PR with test results and security scan status
+
+#### Safety Guarantees
+
+- **Branch Protection**: Never pushes directly to master or main branch
+- **Test Requirements**: All tests must pass - zero failures tolerated
+- **Security Requirements**: Critical and high severity issues block the push
+- **Detailed Documentation**: COMMIT_ISSUES.md created for any blocking issues
+- **Transparency**: All test results and security findings documented in commit and PR
+
+#### When Tests Fail or Security Issues Found
+
+If any tests fail or critical/high security issues are detected:
+
+1. Plugin stops immediately before committing
+2. Creates detailed `COMMIT_ISSUES.md` file with:
+   - Test failure details (which tests failed, error messages, locations)
+   - Security issue details (CVEs, affected code, remediation steps)
+   - Specific action items to resolve issues
+3. Reports failure to user with clear next steps
+4. No commit, push, or PR is created
+
+After fixing the issues, simply run `/safe-commit-pr` again to retry the workflow.
+
 ## The Upgrade Process
 
 ### Upgrade Language Plugin Process
@@ -333,6 +451,30 @@ The plugin follows a structured 11-step process:
 10. **Create Pull Request**: Pushes changes and creates comprehensive security PR
 11. **Post-Deployment Monitoring**: Documents monitoring requirements
 
+### Safe Commit and PR Plugin Process
+
+The plugin follows a structured 9-step safety-first process:
+
+1. **Check Current Branch**: Verifies not on master/main, creates feature branch if needed
+2. **Review Changes**: Examines all modified, added, and deleted files, checks for sensitive data
+3. **Run All Tests**: Executes complete test suite based on detected framework
+   - **MANDATORY**: All tests must pass (100% success rate)
+   - **BLOCKS on failure**: Any test failure stops the workflow immediately
+4. **Check for Security Issues**: Runs security scanners and checks for common vulnerabilities
+   - **MANDATORY**: No critical or high severity issues allowed
+   - **BLOCKS on critical/high**: Security issues stop the workflow immediately
+5. **Create Explanation File**: If tests fail or security issues found, creates detailed `COMMIT_ISSUES.md`
+   - Includes test failure details with error messages and locations
+   - Includes security issue details with CVEs and remediation steps
+   - Provides specific action items to resolve issues
+   - **Workflow stops here if issues found - no commit or push**
+6. **Stage and Commit Changes**: Only if all tests pass and no critical security issues
+   - Creates properly formatted conventional commit
+   - Documents test results and security status in commit message
+7. **Push to Remote**: Pushes to feature branch with upstream tracking
+8. **Create Pull Request**: Generates comprehensive PR with test and security details
+9. **Report Results**: Provides success summary with PR URL or failure details with COMMIT_ISSUES.md reference
+
 ## Upgrade Documentation
 
 ### UPGRADE_EXPLANATION.md (Language Plugin)
@@ -383,6 +525,29 @@ The vulnerable dependencies plugin creates a comprehensive `VULNERABILITY_REPORT
 - **Updates applied**: Before/after versions, CVEs resolved, status
 - **Test results**: Complete test execution results and verification
 - **Remaining issues**: Any unfixed vulnerabilities with mitigation plans
+
+### COMMIT_ISSUES.md (Safe Commit and PR Plugin)
+
+The safe commit plugin creates `COMMIT_ISSUES.md` when tests fail or security issues are found:
+
+- **Status summary**: Whether workflow is blocked and why
+- **Test results**: Complete test execution details with pass/fail counts
+- **Failed tests**: Detailed information for each failed test including:
+  - Test file and line number
+  - Test name and error message
+  - Stack trace and location of issue
+- **Security issues organized by severity**:
+  - Critical issues (BLOCKS push)
+  - High severity issues (BLOCKS push)
+  - Medium severity issues (WARNING)
+  - Low severity issues (INFO)
+- **For each security issue**: File location, issue type, risk description, required fix, code examples
+- **Files changed**: List of all modified files
+- **Blocking issues**: All issues that prevent push to remote
+- **Action items**: Specific steps to resolve each issue
+- **Next steps**: How to proceed after fixing issues
+
+**Note**: This file is created ONLY when issues are found. If all tests pass and no security issues exist, the workflow proceeds directly to commit and push without creating this file.
 
 All documentation files are included in commits and referenced in PRs for full transparency.
 
